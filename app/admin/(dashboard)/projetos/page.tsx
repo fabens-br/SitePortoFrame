@@ -38,9 +38,14 @@ export default function ProjetosListPage() {
       }
       
       setProjects(data)
-    } catch (err: any) {
-      console.error("Erro crítico ao buscar projetos:", err)
-      setError(err.message || "Erro desconhecido ao carregar projetos.")
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Erro crítico ao buscar projetos:", err.message)
+        setError(err.message)
+      } else {
+        console.error("Erro crítico ao buscar projetos:", err)
+        setError("Erro desconhecido ao carregar projetos.")
+      }
       setProjects([]) // Garante que nunca seja null ou object
     } finally {
       setLoading(false)
