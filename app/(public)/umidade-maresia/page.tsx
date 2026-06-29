@@ -15,19 +15,19 @@ export default function UmidadeMaresiaPage() {
       {/* SEÇÃO HERO */}
       <section className="pt-[160px] lg:pt-[176px] pb-20 md:pb-32 bg-stone-50 overflow-hidden">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center min-h-[400px] lg:min-h-[800px]">
             {/* Imagem */}
-            <div className="relative rounded-[2rem] overflow-hidden aspect-[4/3] lg:aspect-square w-full shadow-2xl">
+            <div className="relative rounded-[2rem] overflow-hidden w-full h-full min-h-[400px] lg:min-h-[800px] shadow-2xl bg-white flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 src="/images/estrutura_wood_real.png" 
                 alt="Detalhes da estrutura de Wood Frame e proteção contra umidade" 
-                className="w-full h-full object-cover absolute inset-0"
+                className="w-full h-full object-contain absolute inset-0"
               />
             </div>
             
             {/* Conteúdo */}
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center max-w-[580px] mx-auto lg:mx-0 lg:pl-4 py-10">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 text-stone-900 uppercase">
                 Umidade e Maresia:<br />
                 <span className="text-primary text-2xl md:text-4xl lg:text-4xl mt-2 block">Tecnologia preparada para o litoral</span>
@@ -35,7 +35,7 @@ export default function UmidadeMaresiaPage() {
               <p className="text-lg md:text-xl text-stone-600 leading-relaxed mb-10">
                 Construir próximo ao mar exige um sistema construtivo desenvolvido para enfrentar um dos ambientes mais agressivos da construção civil. A combinação entre umidade elevada, maresia e variações climáticas acelera a deterioração de materiais convencionais. O sistema Wood Frame da Porto Frame foi projetado para oferecer proteção, durabilidade e desempenho mesmo em regiões litorâneas.
               </p>
-              <div>
+              <div className="mt-5">
                 <Link href="/contato">
                   <Button size="lg" className="px-8 h-14 text-sm font-bold uppercase tracking-widest rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
                     Solicitar Orçamento
