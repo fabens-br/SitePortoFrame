@@ -7,30 +7,34 @@ import { ImageFallback } from "@/components/ui/image-fallback"
 
 
 const objections = [
- {
- icon: Flame,
- title: "Resistência ao Fogo",
- description: "A madeira recebe tratamento retardante e é encapsulada com placas de gesso acartonado (Drywall) resistentes ao fogo, superando o tempo de resistência da alvenaria comum segundo normas técnicas.",
- image: "/images/fogo.png"
- },
- {
- icon: Droplets,
- title: "Umidade e Maresia",
- description: "Sistema inteligente de multicamadas (OSB, Membrana Hidrófuga e Siding) que permite a 'respiração' da parede, bloqueando a água externa e impedindo condensação interna. Imune à maresia.",
- image: "/images/umidade_maresia.png"
- },
- {
- icon: Bug,
- title: "Cupins e Pragas",
- description: "O Pinus estrutural passa por tratamento industrial em autoclave sob alta pressão. A madeira torna-se toxica para organismos xilófagos (cupins e brocas), garantindo durabilidade secular.",
- image: "/images/cupins.png"
- },
- {
- icon: Wind,
- title: "Ventos e Tempestades",
- description: "Estrutura contraventada com chapas estruturais de OSB em todo o perímetro. O sistema trabalha de forma monolítica e flexível, resistindo a ventos superiores a 200km/h.",
- image: "/images/ventos.png"
- }
+  {
+    icon: Flame,
+    title: "Resistência ao Fogo",
+    description: "A madeira recebe tratamento retardante e é encapsulada com placas de gesso acartonado (Drywall) resistentes ao fogo, superando o tempo de resistência da alvenaria comum segundo normas técnicas.",
+    image: "/images/fogo.png",
+    href: "/mitos-e-verdades"
+  },
+  {
+    icon: Droplets,
+    title: "Umidade e Maresia",
+    description: "Sistema inteligente de multicamadas (OSB, Membrana Hidrófuga e Siding) que permite a 'respiração' da parede, bloqueando a água externa e impedindo condensação interna. Imune à maresia.",
+    image: "/images/umidade_maresia.png",
+    href: "/umidade-maresia"
+  },
+  {
+    icon: Bug,
+    title: "Cupins e Pragas",
+    description: "O Pinus estrutural passa por tratamento industrial em autoclave sob alta pressão. A madeira torna-se toxica para organismos xilófagos (cupins e brocas), garantindo durabilidade secular.",
+    image: "/images/cupins.png",
+    href: "/mitos-e-verdades"
+  },
+  {
+    icon: Wind,
+    title: "Ventos e Tempestades",
+    description: "Estrutura contraventada com chapas estruturais de OSB em todo o perímetro. O sistema trabalha de forma monolítica e flexível, resistindo a ventos superiores a 200km/h.",
+    image: "/images/ventos.png",
+    href: "/mitos-e-verdades"
+  }
 ]
 
 export function Objections() {
@@ -83,7 +87,7 @@ export function Objections() {
  </CardDescription>
  </CardHeader>
  <CardContent className="pt-0">
- <Link href="/mitos-e-verdades">
+ <Link href={item.href}>
  <Button variant="link" className="px-0 text-primary group-hover:text-primary-dark">
  Saiba mais
  </Button>
