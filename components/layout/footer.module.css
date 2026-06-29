@@ -1,0 +1,208 @@
+.footer {
+  background: linear-gradient(180deg, #0d0b0a 0%, #14110f 12%, #14110f 100%);
+  color: #d6d3d1;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 90px 48px 60px;
+  width: 100%;
+}
+
+.footerMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 100px;
+}
+
+.footerBrand {
+  flex: 0 0 300px;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 28px;
+  display: block;
+}
+
+.brandText {
+  max-width: 260px;
+  font-size: 15px;
+  line-height: 1.8;
+  opacity: 0.72;
+  font-weight: 300;
+}
+
+.footerNav {
+  flex: 0 0 190px;
+}
+
+.navTitle {
+  font-size: 15px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 24px;
+  font-weight: bold;
+}
+
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 17px;
+  line-height: 2.1;
+}
+
+.navLink {
+  color: #a8a29e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s;
+}
+.navLink:hover {
+  color: #f97316; /* primary */
+}
+.navLinkIcon {
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+  margin-left: -16px;
+  transition: all 0.2s;
+  color: #f97316;
+}
+.navLink:hover .navLinkIcon {
+  opacity: 1;
+  margin-left: 0;
+}
+
+.footerContact {
+  flex: 0 0 420px;
+}
+
+.contactTitle {
+  font-size: 15px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 24px;
+  font-weight: bold;
+}
+
+.contactCard {
+  width: 100%;
+  padding: 30px;
+  border-radius: 18px;
+  background-color: rgba(28, 25, 23, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+.contactItem:hover .contactIconWrapper {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.contactItem:hover .contactValue {
+  color: #f97316;
+}
+.contactIconWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.2s;
+}
+.contactIconWrapperPrimary {
+  background-color: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+.contactItem:hover .contactIconWrapperPrimary {
+  background-color: #f97316;
+  color: #ffffff;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+}
+.contactLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #78716c;
+}
+.contactValue {
+  color: #ffffff;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 70px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  color: #78716c;
+}
+
+.bottomLinks {
+  display: flex;
+  gap: 24px;
+}
+.bottomLink {
+  color: inherit;
+  transition: color 0.2s;
+}
+.bottomLink:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .footerMain {
+    flex-wrap: wrap;
+    gap: 60px;
+  }
+  .footerBrand {
+    flex: 1 1 100%;
+  }
+  .footerNav {
+    flex: 1 1 calc(40% - 30px);
+  }
+  .footerContact {
+    flex: 1 1 calc(60% - 30px);
+  }
+}
+
+@media (max-width: 768px) {
+  .footerMain {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .footerNav, .footerContact {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .footerBottom {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
