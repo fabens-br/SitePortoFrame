@@ -16,6 +16,7 @@ type Project = {
 export default function ProjetosListPage() {
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchProjects()
@@ -23,11 +24,24 @@ export default function ProjetosListPage() {
 
   const fetchProjects = async () => {
     try {
+      setLoading(true)
+      setError(null)
       const res = await fetch("/api/projects")
       const data = await res.json()
+      
+      if (!res.ok) {
+        throw new Error(data.error || "Erro HTTP ao buscar projetos.")
+      }
+      
+      if (!Array.isArray(data)) {
+        throw new Error("Formato inválido: a API não retornou uma lista de projetos.")
+      }
+      
       setProjects(data)
-    } catch (error) {
-      console.error(error)
+    } catch (err: any) {
+      console.error("Erro crítico ao buscar projetos:", err)
+      setError(err.message || "Erro desconhecido ao carregar projetos.")
+      setProjects([]) // Garante que nunca seja null ou object
     } finally {
       setLoading(false)
     }
@@ -58,13 +72,19 @@ export default function ProjetosListPage() {
       <div className="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm">
         {loading ? (
           <div className="p-8 text-center text-stone-500">Carregando projetos...</div>
+        ) : error ? (
+          <div className="p-12 text-center text-red-500 flex flex-col items-center">
+            <h3 className="font-semibold text-lg mb-2">Falha no carregamento</h3>
+            <p className="text-sm mb-4">{error}</p>
+            <Button variant="outline" onClick={fetchProjects}>Tentar Novamente</Button>
+          </div>
         ) : projects.length === 0 ? (
           <div className="p-12 text-center text-stone-500 flex flex-col items-center">
             <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mb-4">
               <Plus className="text-stone-300" size={32} />
             </div>
-            <h3 className="font-semibold text-lg text-stone-900 mb-1">Nenhum projeto</h3>
-            <p className="text-sm">Você ainda não cadastrou nenhum projeto.</p>
+            <h3 className="font-semibold text-lg text-stone-900 mb-1">Nenhum projeto cadastrado.</h3>
+            <p className="text-sm">Clique em Novo Projeto para começar.</p>
           </div>
         ) : (
           <div className="divide-y divide-stone-100">
