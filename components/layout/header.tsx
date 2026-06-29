@@ -68,6 +68,9 @@ export function Header() {
           <Link href="/wood-frame" className={cn("font-medium tracking-wide transition-colors uppercase text-[14px] hover:text-primary", isScrolled ? "text-[#2E241F]" : "text-stone-900")}>
             Wood Frame
           </Link>
+          <Link href="/vantagens" className={cn("font-medium tracking-wide transition-colors uppercase text-[14px] hover:text-primary", isScrolled ? "text-[#2E241F]" : "text-stone-900")}>
+            Vantagens
+          </Link>
           <Link href="/projetos" className={cn("font-medium tracking-wide transition-colors uppercase text-[14px] hover:text-primary", isScrolled ? "text-[#2E241F]" : "text-stone-900")}>
             Projetos
           </Link>

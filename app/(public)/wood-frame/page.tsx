@@ -24,18 +24,24 @@ export default function WoodFramePage() {
             {/* Imagem do esqueleto da casa */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src="https://images.unsplash.com/photo-1541888079549-9eb10834ba78?auto=format&fit=crop&q=80&w=800" 
-              alt="Estrutura de Madeira Wood Frame" 
-              className="w-full h-full object-cover"
+              src="/images/estrutura_wood.png" 
+              alt="Estrutura em Wood Frame com identificação das camadas construtivas" 
+              className="w-full h-full object-contain object-center"
             />
           </div>
           <div className="flex flex-col justify-center">
             <h3 className="text-2xl font-bold mb-4">A Estrutura Primária</h3>
-            <p className="text-muted-foreground leading-relaxed">
-              O &quot;esqueleto&quot; da casa é formado por perfis de madeira estrutural (Pinus autoclavado). 
-              Esta madeira recebe um tratamento químico industrial sob alta pressão, tornando-se 
-              imune a cupins, brocas e apodrecimento, com durabilidade secular comprovada.
-            </p>
+            <div className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                A base do sistema Wood Frame é formada por montantes e travessas de madeira estrutural de reflorestamento (Pinus autoclavado), dimensionados por cálculo de engenharia para distribuir com precisão todas as cargas da edificação.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Antes da fabricação, cada peça recebe tratamento industrial em autoclave sob alta pressão, tornando-a altamente resistente à ação de cupins, fungos e ao apodrecimento. O resultado é uma estrutura leve, extremamente resistente e dimensionalmente estável, capaz de suportar décadas de uso com elevado desempenho estrutural.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Cada painel é produzido com precisão milimétrica, garantindo alinhamento perfeito, redução de desperdícios e uma montagem rápida e segura, seguindo padrões amplamente utilizados nos Estados Unidos, Canadá e Europa.
+              </p>
+            </div>
           </div>
         </div>
       </Container>
