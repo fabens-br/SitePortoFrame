@@ -28,3 +28,15 @@ model ProjectImage {
   created_at    DateTime @default(now())
   project       Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)
 }
+
+model Lead {
+  id           String   @id @default(uuid())
+  name         String
+  email        String
+  phone        String
+  project_type String
+  message      String?
+  ip           String?
+  user_agent   String?
+  created_at   DateTime @default(now())
+}
