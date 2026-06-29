@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server"
-import { Resend } from "resend"
+import nodemailer from "nodemailer"
 import prisma from "@/lib/prisma"
 import { z } from "zod"
-
-// Instanciar o resend, se a chave não existir não vai quebrar na inicialização, mas falhar no envio.
-const resend = new Resend(process.env.RESEND_API_KEY || "missing-key")
-
 const contactSchema = z.object({
   name: z.string().min(3),
   email: z.string().email(),
@@ -114,16 +110,30 @@ ${sanitizedMessage || "Nenhum detalhe adicional fornecido."}
       </div>
     `
 
-    // Ocultar a falta de API KEY se estiver num dev sem configuração, para que a inserção no banco funcione
-    if (process.env.RESEND_API_KEY) {
-      await resend.emails.send({
-        from: process.env.EMAIL_FROM || "Porto Frame <noreply@portoframe.com.br>",
-        to: [process.env.EMAIL_TO || "portoframebr@gmail.com"],
+    // Ocultar a falta de SMTP_USER se estiver num dev sem configuração, para que a inserção no banco funcione
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+      if (!process.env.EMAIL_TO) {
+        throw new Error("A variável de ambiente EMAIL_TO precisa estar configurada.")
+      }
+
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || "smtp.gmail.com",
+        port: Number(process.env.SMTP_PORT) || 465,
+        secure: process.env.SMTP_SECURE !== "false", // default to true
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      })
+
+      await transporter.sendMail({
+        from: process.env.SMTP_USER, // O próprio e-mail autenticado
+        to: process.env.EMAIL_TO,
         subject: "🏡 Novo Pedido de Orçamento - Porto Frame",
         html: htmlContent,
       })
     } else {
-      console.log("RESEND_API_KEY não configurada. Simulando envio do e-mail.")
+      console.log("SMTP_USER não configurado. Simulando envio do e-mail.")
       console.log("Conteúdo:", htmlContent)
     }
 
