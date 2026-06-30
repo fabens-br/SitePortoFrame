@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model Project {
-  id          String         @id @default(uuid())
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
   slug        String         @unique
   nome        String
   cidade      String
@@ -21,8 +21,8 @@ model Project {
 }
 
 model ProjectImage {
-  id            String   @id @default(uuid())
-  project_id    String
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  project_id    String   @db.ObjectId
   image_url     String
   display_order Int      @default(0)
   created_at    DateTime @default(now())
@@ -30,7 +30,7 @@ model ProjectImage {
 }
 
 model Lead {
-  id           String   @id @default(uuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   email        String
   phone        String

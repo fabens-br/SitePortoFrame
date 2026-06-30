@@ -29,7 +29,6 @@ export async function POST(request: Request) {
     const filename = `${originalName}-${uniqueSuffix}.webp`
     const filepath = path.join(uploadDir, filename)
     const thumbpath = path.join(thumbDir, filename)
-
     // Converter e otimizar para WebP (Imagem principal)
     await sharp(buffer)
       .webp({ quality: 85 })
