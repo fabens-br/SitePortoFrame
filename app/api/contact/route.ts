@@ -55,7 +55,7 @@ export async function POST(req: Request) {
       }
     })
 
-    // 5. Enviar E-mail via Resend
+    // 5. Enviar E-mail via Nodemailer
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden;">
         <div style="background-color: #D9772B; padding: 24px; text-align: center;">
