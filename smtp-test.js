@@ -1,3 +1,4 @@
+/* eslint-disable */
 const nodemailer = require("nodemailer");
 
 async function main() {

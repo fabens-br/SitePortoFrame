@@ -6,7 +6,11 @@ import prisma from "@/lib/prisma"
 
 export async function ProjectsPreview() {
   const projects = await prisma.project.findMany({
-    where: { featured: true },
+    where: { 
+      featured: true,
+      published: true, 
+      status: "PUBLISHED" 
+    },
     orderBy: { created_at: "desc" },
     take: 3,
   })

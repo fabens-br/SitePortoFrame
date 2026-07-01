@@ -67,3 +67,7 @@
    Reload env: .env
    Reload env: .env
    Reload env: .env
+   Reload env: .env
+ ✓ Compiled middleware in 12ms
+ ✓ Compiled middleware in 7ms
+   Reload env: .env

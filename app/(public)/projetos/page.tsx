@@ -9,10 +9,17 @@ export const metadata: Metadata = {
   description: "Explore nossa galeria de projetos e descubra a flexibilidade arquitetônica do sistema Wood Frame em residências de alto padrão.",
 }
 
-export const revalidate = 60 // Revalidate cache every minute
+// Em vez de force-dynamic ou revalidate estático, podemos deixar 
+// para utilizar as revalidações por tag a cada inserção. 
+// Isso garante o ISR otimizado e sempre cacheado.
+export const revalidate = 3600 // Cache long lived, invalidado por webhook ou revalidateTag/Path
 
 export default async function ProjetosPage() {
   const projects = await prisma.project.findMany({
+    where: { 
+      published: true,
+      status: "PUBLISHED"
+    },
     orderBy: { created_at: "desc" },
   })
 

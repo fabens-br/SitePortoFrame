@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
 model Project {
   id          String         @id @default(auto()) @map("_id") @db.ObjectId
   slug        String         @unique
@@ -15,6 +21,8 @@ model Project {
   descricao   String?
   cover_image String?
   featured    Boolean        @default(false)
+  published   Boolean        @default(true)
+  status      ProjectStatus  @default(PUBLISHED)
   created_at  DateTime       @default(now())
   updated_at  DateTime       @updatedAt
   images      ProjectImage[]
@@ -24,6 +32,12 @@ model ProjectImage {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   project_id    String   @db.ObjectId
   image_url     String
+  pathname      String?
+  filename      String?
+  mimeType      String   @default("image/webp")
+  size          Int      @default(0)
+  width         Int?
+  height        Int?
   display_order Int      @default(0)
   created_at    DateTime @default(now())
   project       Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)

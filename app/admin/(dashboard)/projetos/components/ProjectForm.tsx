@@ -16,14 +16,18 @@ type ProjectFormProps = {
     cidade: string
     descricao: string
     featured: boolean
+    published?: boolean
+    status?: string
     images?: { id: string; image_url: string }[]
   }
   isEdit?: boolean
 }
 
-type ImageItem = {
+type FormImage = {
   id: string
-  image_url: string
+  url: string
+  file?: File
+  isNew: boolean
 }
 
 export function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
@@ -33,10 +37,13 @@ export function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
   const [cidade, setCidade] = useState(initialData?.cidade || "")
   const [descricao, setDescricao] = useState(initialData?.descricao || "")
   const [featured, setFeatured] = useState(initialData?.featured || false)
-  const [images, setImages] = useState<ImageItem[]>(
+  const [published, setPublished] = useState(initialData?.published ?? true)
+  const [status, setStatus] = useState(initialData?.status || "PUBLISHED")
+  const [images, setImages] = useState<FormImage[]>(
     initialData?.images?.map((img) => ({
-      id: img.id || Math.random().toString(),
-      image_url: img.image_url,
+      id: img.id,
+      url: img.image_url,
+      isNew: false
     })) || []
   )
 
@@ -56,48 +63,63 @@ export function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
     }
   }
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return
     
-    setLoading(true)
     const files = Array.from(e.target.files)
+    const newImages = files.map(file => ({
+      id: `new-${Math.random().toString(36).substr(2, 9)}`,
+      url: URL.createObjectURL(file),
+      file,
+      isNew: true
+    }))
     
-    for (const file of files) {
-      const formData = new FormData()
-      formData.append("file", file)
-      
-      try {
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        })
-        const data = await res.json()
-        
-        if (data.url) {
-          setImages(prev => [...prev, { id: Math.random().toString(), image_url: data.url }])
-        }
-      } catch (error) {
-        console.error("Upload error:", error)
-      }
-    }
-    setLoading(false)
+    setImages(prev => [...prev, ...newImages])
+    // clear input
+    e.target.value = ''
   }
 
   const handleRemoveImage = (id: string) => {
-    setImages(prev => prev.filter(img => img.id !== id))
+    setImages(prev => {
+      const filtered = prev.filter(img => img.id !== id);
+      const removed = prev.find(img => img.id === id);
+      if (removed?.isNew && removed.url) {
+        URL.revokeObjectURL(removed.url); // free memory
+      }
+      return filtered;
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
-    const payload = {
-      nome,
-      cidade,
-      descricao,
-      featured,
-      images,
-    }
+    const formData = new FormData();
+    formData.append("nome", nome);
+    formData.append("cidade", cidade);
+    formData.append("descricao", descricao);
+    formData.append("featured", featured.toString());
+    formData.append("published", published.toString());
+    formData.append("status", status);
+
+    const existingImages: { id: string; url: string }[] = [];
+    const layoutOrder: string[] = [];
+    let newFileIndex = 0;
+
+    images.forEach((img) => {
+      if (img.isNew && img.file) {
+        formData.append("images", img.file); // Para rota POST unificada
+        formData.append("newImages", img.file); // Para rota PUT (isEdit)
+        layoutOrder.push(`new-${newFileIndex}`);
+        newFileIndex++;
+      } else {
+        existingImages.push({ id: img.id, url: img.url });
+        layoutOrder.push(`old-${img.id}`);
+      }
+    });
+
+    formData.append("existingImages", JSON.stringify(existingImages));
+    formData.append("layoutOrder", JSON.stringify(layoutOrder));
 
     try {
       const url = isEdit ? `/api/projects/${initialData?.id}` : "/api/projects"
@@ -105,19 +127,19 @@ export function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
 
       const res = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: formData,
       })
 
       if (res.ok) {
         router.push("/admin/projetos")
         router.refresh()
       } else {
-        alert("Erro ao salvar projeto")
+        const err = await res.json()
+        alert(`Erro ao salvar projeto: ${err.error || "Desconhecido"}`)
       }
     } catch (error) {
       console.error(error)
-      alert("Erro de conexão")
+      alert("Erro de conexão. Verifique o console.")
     } finally {
       setLoading(false)
     }
@@ -169,21 +191,48 @@ export function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
           />
         </div>
 
-        <div className="md:col-span-2 pt-2 border-t border-stone-100 flex items-center gap-3">
-          <input 
-            type="checkbox" 
-            id="featured"
-            checked={featured}
-            onChange={(e) => setFeatured(e.target.checked)}
-            className="w-5 h-5 rounded border-stone-300 text-primary focus:ring-primary"
-          />
-          <label htmlFor="featured" className="text-sm font-medium text-stone-900 cursor-pointer">
-            ⭐ Destacar este projeto na Home (Será exibido na vitrine principal)
-          </label>
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-stone-900">Status</label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-stone-50 focus:bg-white transition-colors"
+          >
+            <option value="DRAFT">Rascunho (DRAFT)</option>
+            <option value="PUBLISHED">Publicado (PUBLISHED)</option>
+            <option value="ARCHIVED">Arquivado (ARCHIVED)</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-3 justify-center pt-2">
+          <div className="flex items-center gap-3">
+            <input 
+              type="checkbox" 
+              id="published"
+              checked={published}
+              onChange={(e) => setPublished(e.target.checked)}
+              className="w-5 h-5 rounded border-stone-300 text-primary focus:ring-primary"
+            />
+            <label htmlFor="published" className="text-sm font-medium text-stone-900 cursor-pointer">
+              Exibir publicamente no site
+            </label>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <input 
+              type="checkbox" 
+              id="featured"
+              checked={featured}
+              onChange={(e) => setFeatured(e.target.checked)}
+              className="w-5 h-5 rounded border-stone-300 text-primary focus:ring-primary"
+            />
+            <label htmlFor="featured" className="text-sm font-medium text-stone-900 cursor-pointer">
+              ⭐ Destacar na Home
+            </label>
+          </div>
         </div>
       </div>
 
-      {/* Galeria Drag and Drop */}
       <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-6">
         <div>
           <h3 className="text-lg font-bold text-stone-900">Galeria de Imagens</h3>
@@ -197,7 +246,7 @@ export function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
                 <SortableImage 
                   key={img.id} 
                   id={img.id} 
-                  url={img.image_url} 
+                  url={img.url} 
                   isCover={index === 0} 
                   onRemove={handleRemoveImage} 
                 />
@@ -205,7 +254,6 @@ export function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
             </SortableContext>
           </DndContext>
 
-          {/* Upload Button */}
           <div className="relative border-2 border-dashed border-stone-300 rounded-xl hover:border-primary hover:bg-primary/5 transition-colors aspect-[4/3] min-h-[128px]">
             <input 
               type="file" 
