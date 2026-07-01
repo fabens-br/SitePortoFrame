@@ -73,3 +73,26 @@
    Reload env: .env
    Reload env: .env
    Reload env: .env
+ ✓ Compiled middleware in 11ms
+ ○ Compiling /api/debug-env ...
+ ✓ Compiled /api/debug-env in 776ms
+ ⨯ Error: Cannot find module '../../../chunks/[turbopack]_runtime.js'
+Require stack:
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/.next/server/app/api/debug-env/route.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/server/require.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/server/load-components.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/build/utils.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/build/swc/options.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/build/swc/index.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/server/config.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/server/next.js
+- /Users/rafaeltartaglia/Desktop/SitePortoFrame/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/server/app/api/debug-env/route.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/api/debug-env'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1334ms
+ GET /api/debug-env 500 in 2621ms
