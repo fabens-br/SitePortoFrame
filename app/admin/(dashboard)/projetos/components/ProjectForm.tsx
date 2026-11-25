@@ -108,8 +108,7 @@ export function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
 
     images.forEach((img) => {
       if (img.isNew && img.file) {
-        formData.append("images", img.file); // Para rota POST unificada
-        formData.append("newImages", img.file); // Para rota PUT (isEdit)
+        formData.append(isEdit ? "newImages" : "images", img.file);
         layoutOrder.push(`new-${newFileIndex}`);
         newFileIndex++;
       } else {

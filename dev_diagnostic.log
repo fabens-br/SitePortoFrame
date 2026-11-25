@@ -96,3 +96,4 @@ Require stack:
  ○ Compiling /_error ...
  ✓ Compiled /_error in 1334ms
  GET /api/debug-env 500 in 2621ms
+[?25h
